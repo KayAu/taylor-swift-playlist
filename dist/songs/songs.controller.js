@@ -18,20 +18,21 @@ const songs_service_1 = require("./songs.service");
 const express_1 = require("express");
 const swagger_1 = require("@nestjs/swagger");
 const month_validation_pipe_1 = require("../pipe/month.validation.pipe");
+const sortBy_validation_pipe_1 = require("../pipe/sortBy.validation.pipe");
 let SongsController = class SongsController {
     constructor(songsService) {
         this.songsService = songsService;
     }
-    async getSongs(sortBy, ascOrder) {
+    async getSongs(searchText, sortBy, ascOrder) {
         try {
-            const songs = await this.songsService.getAllSongs(sortBy, ascOrder);
+            const songs = await this.songsService.getAllSongs(searchText, sortBy, ascOrder);
             return songs;
         }
         catch (err) {
             return express_1.response.status(err.status).json(err.response);
         }
     }
-    async method(year, sortBy, ascOrder) {
+    async getSongsByYear(year, sortBy, ascOrder) {
         try {
             return this.songsService.getSongsByYear(year, sortBy, ascOrder);
         }
@@ -48,19 +49,9 @@ let SongsController = class SongsController {
             return express_1.response.status(err.status).json(err.response);
         }
     }
-    async findAlbum(searchText, sortBy, ascOrder) {
-        try {
-            const albums = await this.songsService.findSong(searchText, sortBy, ascOrder);
-            return albums;
-        }
-        catch (err) {
-            return express_1.response.status(err.status).json(err.response);
-        }
-    }
     async getMostPopular(month = '', limit = 5) {
         try {
-            const validMonth = new month_validation_pipe_1.MonthValidationPipe().transform(month);
-            const albums = await this.songsService.getMostPopular(validMonth, limit);
+            const albums = await this.songsService.getMostPopular(month, limit);
             return albums;
         }
         catch (err) {
@@ -76,11 +67,27 @@ let SongsController = class SongsController {
             return express_1.response.status(err.status).json(err.response);
         }
     }
+    async getMonthlySummary(month) {
+        try {
+            const albums = await this.songsService.getMonthlySummary(month);
+            return albums;
+        }
+        catch (err) {
+            return express_1.response.status(err.status).json(err.message);
+        }
+    }
 };
 exports.SongsController = SongsController;
 __decorate([
     (0, common_1.Get)('getSongs'),
     (0, swagger_1.ApiOperation)({ summary: 'Get all songs' }),
+    (0, swagger_1.ApiQuery)({
+        name: 'searchText',
+        type: String,
+        description: 'Song can be a full or partial name. All songs will be return if this field is empty ',
+        required: false,
+        example: '',
+    }),
     (0, swagger_1.ApiQuery)({
         name: 'sortBy',
         type: String,
@@ -97,10 +104,11 @@ __decorate([
     }),
     (0, swagger_1.ApiResponse)({ status: 201, description: 'Return all songs sorted by year is DESC order' }),
     (0, swagger_1.ApiResponse)({ status: 400, description: 'Bad Request' }),
-    __param(0, (0, common_1.Query)('sortBy')),
-    __param(1, (0, common_1.Query)('ascOrder', common_1.ParseBoolPipe)),
+    __param(0, (0, common_1.Query)('searchText')),
+    __param(1, (0, common_1.Query)('sortBy', sortBy_validation_pipe_1.SortByValidationPipe)),
+    __param(2, (0, common_1.Query)('ascOrder', common_1.ParseBoolPipe)),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, Boolean]),
+    __metadata("design:paramtypes", [String, String, Boolean]),
     __metadata("design:returntype", Promise)
 ], SongsController.prototype, "getSongs", null);
 __decorate([
@@ -130,12 +138,12 @@ __decorate([
     (0, swagger_1.ApiResponse)({ status: 201, description: 'Return songs writen in a given year' }),
     (0, swagger_1.ApiResponse)({ status: 400, description: 'Bad Request' }),
     __param(0, (0, common_1.Query)('year', common_1.ParseIntPipe)),
-    __param(1, (0, common_1.Query)('sortBy')),
+    __param(1, (0, common_1.Query)('sortBy', sortBy_validation_pipe_1.SortByValidationPipe)),
     __param(2, (0, common_1.Query)('ascOrder', common_1.ParseBoolPipe)),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number, String, Boolean]),
     __metadata("design:returntype", Promise)
-], SongsController.prototype, "method", null);
+], SongsController.prototype, "getSongsByYear", null);
 __decorate([
     (0, common_1.Get)('getSongsByAlbum'),
     (0, swagger_1.ApiOperation)({ summary: 'Get songs by album' }),
@@ -163,45 +171,12 @@ __decorate([
     (0, swagger_1.ApiResponse)({ status: 201, description: 'Return songs for an album' }),
     (0, swagger_1.ApiResponse)({ status: 400, description: 'Bad Request' }),
     __param(0, (0, common_1.Query)('album')),
-    __param(1, (0, common_1.Query)('sortBy')),
+    __param(1, (0, common_1.Query)('sortBy', sortBy_validation_pipe_1.SortByValidationPipe)),
     __param(2, (0, common_1.Query)('ascOrder', common_1.ParseBoolPipe)),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, String, Boolean]),
     __metadata("design:returntype", Promise)
 ], SongsController.prototype, "getSongsByAlbum", null);
-__decorate([
-    (0, common_1.Get)('findSong'),
-    (0, swagger_1.ApiOperation)({ summary: 'Find songs by title' }),
-    (0, swagger_1.ApiQuery)({
-        name: 'searchText',
-        type: String,
-        description: 'Song can be a full or partial name.',
-        required: true,
-        example: 'All Too Well',
-    }),
-    (0, swagger_1.ApiQuery)({
-        name: 'sortBy',
-        type: String,
-        description: 'Sort by field. The default sort by field is Song name.',
-        required: false,
-        example: 'Song',
-    }),
-    (0, swagger_1.ApiQuery)({
-        name: 'ascOrder',
-        type: Boolean,
-        description: 'Sort in ascending direction. The default sort direction is True',
-        required: false,
-        example: true,
-    }),
-    (0, swagger_1.ApiResponse)({ status: 201, description: 'Return songs' }),
-    (0, swagger_1.ApiResponse)({ status: 400, description: 'Bad Request' }),
-    __param(0, (0, common_1.Query)('searchText')),
-    __param(1, (0, common_1.Query)('sortBy')),
-    __param(2, (0, common_1.Query)('ascOrder', common_1.ParseBoolPipe)),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, String, Boolean]),
-    __metadata("design:returntype", Promise)
-], SongsController.prototype, "findAlbum", null);
 __decorate([
     (0, common_1.Get)('getMostPopular'),
     (0, swagger_1.ApiOperation)({ summary: 'Get most popular songs' }),
@@ -221,7 +196,7 @@ __decorate([
     }),
     (0, swagger_1.ApiResponse)({ status: 201, description: 'Return most popular items albums' }),
     (0, swagger_1.ApiResponse)({ status: 400, description: 'Bad Request' }),
-    __param(0, (0, common_1.Query)('month')),
+    __param(0, (0, common_1.Query)('month', month_validation_pipe_1.MonthValidationPipe)),
     __param(1, (0, common_1.Query)('limit', common_1.ParseIntPipe)),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, Object]),
@@ -254,12 +229,29 @@ __decorate([
     (0, swagger_1.ApiResponse)({ status: 201, description: 'Return songs' }),
     (0, swagger_1.ApiResponse)({ status: 400, description: 'Bad Request' }),
     __param(0, (0, common_1.Query)('writer')),
-    __param(1, (0, common_1.Query)('sortBy')),
+    __param(1, (0, common_1.Query)('sortBy', sortBy_validation_pipe_1.SortByValidationPipe)),
     __param(2, (0, common_1.Query)('ascOrder', common_1.ParseBoolPipe)),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, String, Boolean]),
     __metadata("design:returntype", Promise)
 ], SongsController.prototype, "getSongsByWriter", null);
+__decorate([
+    (0, common_1.Get)('getMonthlySummary'),
+    (0, swagger_1.ApiOperation)({ summary: 'Get the total plays summary for a given month' }),
+    (0, swagger_1.ApiQuery)({
+        name: 'month',
+        type: String,
+        description: 'Month for the total play summary',
+        required: true,
+        example: 'June'
+    }),
+    (0, swagger_1.ApiResponse)({ status: 201, description: 'Return most popular items albums' }),
+    (0, swagger_1.ApiResponse)({ status: 400, description: 'Bad Request' }),
+    __param(0, (0, common_1.Query)('month', month_validation_pipe_1.MonthValidationPipe)),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], SongsController.prototype, "getMonthlySummary", null);
 exports.SongsController = SongsController = __decorate([
     (0, swagger_1.ApiTags)('Songs'),
     (0, common_1.Controller)('songs'),

@@ -26,6 +26,22 @@ export class AlbumController {
         }
     }
 
+    @Get('getYearlyProducedAlbums')
+    @ApiOperation({ summary: 'Get total albums produced for each year' })
+    @ApiResponse({ status: 201, description: 'Return total albums produced in each year' })
+    @ApiResponse({ status: 400, description: 'Bad Request' })
+    async getYearlyProducedAlbums() {
+        try
+        {
+            const albums = await this.albumService.getYearlyProducedAlbums();
+            return albums;
+        }
+        catch(err)
+        {
+            return response.status(err.status).json(err.response);
+        }
+    }
+
     @Get('getAlbumsByYear/:year')
     @ApiOperation({ summary: 'Get albums by year' })
     @ApiResponse({ status: 201, description: 'Return albums produced in a given year' })
@@ -63,7 +79,7 @@ export class AlbumController {
     @ApiQuery({
         name: 'month',
         type: String,
-        description: 'Month for which to fetch the most popular albums',
+        description: 'Month for which to fetch the most popular albums. This field can be left empty to return most popular songs for all months.',
         required: false,
         example: 'June'
       })
@@ -76,11 +92,10 @@ export class AlbumController {
       })
     @ApiResponse({ status: 201, description: 'Return most popular items albums' })
     @ApiResponse({ status: 400, description: 'Bad Request' })
-    async getMostPopular(@Query('month') month = '', @Query('limit', ParseIntPipe) limit = 5) {
+    async getMostPopular(@Query('month', MonthValidationPipe) month = '', @Query('limit', ParseIntPipe) limit = 5) {
         try
         {
-            const validMonth = new MonthValidationPipe().transform(month);
-            const albums = await this.albumService.getMostPopular(validMonth,  limit);
+            const albums = await this.albumService.getMostPopular(month,  limit);
             return albums;    
         }
         catch(err)

@@ -53,7 +53,10 @@ SongSchema.statics.getSongsWithTotalPlays = async function (sortField: string = 
    return this.aggregate(pipeline);
  };
 
+
+
  export interface SongModel extends Model<Song> {
    getSongsWithTotalPlays(sortField: string, ascOrder: boolean, fieldName?: string, matchValue?: any): Promise<any[]>;
  }
 
+ 

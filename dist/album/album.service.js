@@ -48,6 +48,38 @@ let AlbumService = class AlbumService {
             throw err;
         }
     }
+    async getYearlyProducedAlbums() {
+        try {
+            const albunms = await this.songModel.aggregate([
+                {
+                    $group: {
+                        _id: { Year: "$Year", Album: "$Album" },
+                    },
+                },
+                {
+                    $group: {
+                        _id: "$_id.Year",
+                        TotalAlbums: { $sum: 1 },
+                    },
+                },
+                {
+                    $project: {
+                        _id: 0,
+                        Year: "$_id",
+                        TotalAlbums: 1,
+                    },
+                },
+                {
+                    $sort: { Year: 1 },
+                },
+            ]);
+            return albunms;
+        }
+        catch (err) {
+            console.error('Error fetching unique albums per year:', err);
+            throw err;
+        }
+    }
     async getAlbumByYear(year) {
         try {
             const albums = await this.songModel
@@ -106,13 +138,14 @@ let AlbumService = class AlbumService {
                         Album: { $first: "$Album" },
                         Year: { $first: "$Year" },
                         TotalPlays: month === '' ? { $sum: { $add: ['$PlaysJune', '$PlaysJuly', '$PlaysAugust'] } } : { $sum: monthField }
-                    },
+                    }
                 },
                 {
                     $project: {
                         _id: 0,
                         Album: 1,
                         Year: 1,
+                        Month: month === '' ? 'All months' : month,
                         TotalPlays: 1
                     }
                 },

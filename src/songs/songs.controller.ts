@@ -3,6 +3,7 @@ import { SongsService } from './songs.service';
 import { response } from 'express';
 import { ApiTags, ApiOperation, ApiResponse, ApiQuery } from '@nestjs/swagger';
 import {MonthValidationPipe} from '../pipe/month.validation.pipe';
+import {SortByValidationPipe} from '../pipe/sortBy.validation.pipe';
 
 @ApiTags('Songs')
 @Controller('songs')
@@ -11,6 +12,13 @@ export class SongsController {
 
   @Get('getSongs')
   @ApiOperation({ summary: 'Get all songs' })
+  @ApiQuery({
+    name: 'searchText',
+    type: String,
+    description: 'Song can be a full or partial name. All songs will be return if this field is empty ',
+    required: false,
+    example: '',
+  })
   @ApiQuery({
     name: 'sortBy',
     type: String,
@@ -27,10 +35,10 @@ export class SongsController {
   })
   @ApiResponse({ status: 201, description: 'Return all songs sorted by year is DESC order' })
   @ApiResponse({ status: 400, description: 'Bad Request' })
-  async getSongs(@Query('sortBy') sortBy: string, @Query('ascOrder', ParseBoolPipe) ascOrder: boolean) {
+  async getSongs(@Query('searchText') searchText: string, @Query('sortBy', SortByValidationPipe) sortBy: string, @Query('ascOrder', ParseBoolPipe) ascOrder: boolean) {
     try
     {
-        const songs = await this.songsService.getAllSongs(sortBy, ascOrder);
+        const songs = await this.songsService.getAllSongs(searchText, sortBy, ascOrder);
         return songs;
     }
     catch(err)
@@ -38,7 +46,6 @@ export class SongsController {
         return response.status(err.status).json(err.response);
     }
   }
-
 
   @Get('getSongsByYear')
   @ApiOperation({ summary: 'Get songs by year' })
@@ -65,8 +72,7 @@ export class SongsController {
   })
   @ApiResponse({ status: 201, description: 'Return songs writen in a given year' })
   @ApiResponse({ status: 400, description: 'Bad Request' })
-  //async getSongsByYear(@Param('year', ParseIntPipe) year: number) {
-  async method(@Query('year', ParseIntPipe) year: number, @Query('sortBy') sortBy: string, @Query('ascOrder', ParseBoolPipe) ascOrder: boolean) {
+  async getSongsByYear(@Query('year', ParseIntPipe) year: number, @Query('sortBy', SortByValidationPipe) sortBy: string, @Query('ascOrder', ParseBoolPipe) ascOrder: boolean) {
     try
     {
       return this.songsService.getSongsByYear(year, sortBy, ascOrder);
@@ -103,47 +109,10 @@ export class SongsController {
   })
   @ApiResponse({ status: 201, description: 'Return songs for an album' })
   @ApiResponse({ status: 400, description: 'Bad Request' })
-  async getSongsByAlbum(@Query('album') album: string, @Query('sortBy') sortBy: string, @Query('ascOrder', ParseBoolPipe) ascOrder: boolean) {
+  async getSongsByAlbum(@Query('album') album: string, @Query('sortBy', SortByValidationPipe) sortBy: string, @Query('ascOrder', ParseBoolPipe) ascOrder: boolean) {
       try
       {
           const albums = await this.songsService.getSongsByAlbum(album, sortBy, ascOrder);
-          return albums;
-      }
-      catch(err)
-      {
-          return response.status(err.status).json(err.response);
-      }
-  }
-
-  @Get('findSong')
-  @ApiOperation({ summary: 'Find songs by title' })
-  @ApiQuery({
-    name: 'searchText',
-    type: String,
-    description: 'Song can be a full or partial name.',
-    required: true,
-    example: 'All Too Well',
-  })
-  @ApiQuery({
-    name: 'sortBy',
-    type: String,
-    description: 'Sort by field. The default sort by field is Song name.',
-    required: false,
-    example: 'Song',
-  })
-  @ApiQuery({
-    name: 'ascOrder',
-    type: Boolean,
-    description: 'Sort in ascending direction. The default sort direction is True',
-    required: false,
-    example: true,
-  })
-  @ApiResponse({ status: 201, description: 'Return songs' })
-  @ApiResponse({ status: 400, description: 'Bad Request' })
-  async findAlbum(@Query('searchText') searchText: string, @Query('sortBy') sortBy: string, @Query('ascOrder', ParseBoolPipe) ascOrder: boolean) {
-      try
-      {
-          const albums = await this.songsService.findSong(searchText, sortBy, ascOrder);
           return albums;
       }
       catch(err)
@@ -170,11 +139,10 @@ export class SongsController {
     })
   @ApiResponse({ status: 201, description: 'Return most popular items albums' })
   @ApiResponse({ status: 400, description: 'Bad Request' })
-  async getMostPopular(@Query('month') month = '', @Query('limit', ParseIntPipe) limit = 5) {
+  async getMostPopular(@Query('month', MonthValidationPipe) month = '', @Query('limit', ParseIntPipe) limit = 5) {
       try
       {
-          const validMonth = new MonthValidationPipe().transform(month);
-          const albums = await this.songsService.getMostPopular(validMonth,  limit);
+          const albums = await this.songsService.getMostPopular(month,  limit);
           return albums;    
       }
       catch(err)
@@ -208,7 +176,7 @@ export class SongsController {
   })
   @ApiResponse({ status: 201, description: 'Return songs' })
   @ApiResponse({ status: 400, description: 'Bad Request' })
-  async getSongsByWriter(@Query('writer') writer: string, @Query('sortBy') sortBy: string, @Query('ascOrder', ParseBoolPipe) ascOrder: boolean) {
+  async getSongsByWriter(@Query('writer') writer: string, @Query('sortBy', SortByValidationPipe) sortBy: string, @Query('ascOrder', ParseBoolPipe) ascOrder: boolean) {
       try
       {
           const albums = await this.songsService.getSongsByWriter(writer, sortBy, ascOrder);
@@ -217,6 +185,29 @@ export class SongsController {
       catch(err)
       {
           return response.status(err.status).json(err.response);
+      }
+  }
+
+  @Get('getMonthlySummary')
+  @ApiOperation({ summary: 'Get the total plays summary for a given month' })
+  @ApiQuery({
+      name: 'month',
+      type: String,
+      description: 'Month for the total play summary',
+      required: true,
+      example: 'June'
+    })
+  @ApiResponse({ status: 201, description: 'Return most popular items albums' })
+  @ApiResponse({ status: 400, description: 'Bad Request' })
+  async getMonthlySummary(@Query('month', MonthValidationPipe) month) {
+      try
+      {      
+         const albums = await this.songsService.getMonthlySummary(month);
+         return albums;    
+      }
+      catch(err)
+      {
+          return response.status(err.status).json(err.message);
       }
   }
 }

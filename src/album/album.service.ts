@@ -40,6 +40,40 @@ export class AlbumService {
         }    
     }
 
+    async getYearlyProducedAlbums(): Promise<any[]>
+    {
+        try {
+            const albunms = await this.songModel.aggregate([
+                {
+                  $group: {
+                    _id: { Year: "$Year", Album: "$Album" }, // Group by Year and Album
+                  },
+                },
+                {
+                  $group: {
+                    _id: "$_id.Year", // Group by Year
+                    TotalAlbums: { $sum: 1 }, // Count unique albums
+                  },
+                },
+                {
+                    $project: {
+                      _id: 0, 
+                      Year: "$_id", 
+                      TotalAlbums: 1, 
+                    },
+                },
+                {
+                  $sort: { Year: 1 }, // Sort by Year in ascending order
+                },
+            ]);
+
+            return albunms;
+        } catch (err) {
+            console.error('Error fetching unique albums per year:', err);
+            throw err;
+        }
+    }
+
     async getAlbumByYear(year: number): Promise<string[]>
     {
         try 
@@ -114,14 +148,15 @@ export class AlbumService {
                         _id: { Album: "$Album", Year: "$Year" },
                         Album: { $first: "$Album" },
                         Year: { $first: "$Year" },
-                        TotalPlays: month === ''?  {$sum: { $add: ['$PlaysJune', '$PlaysJuly', '$PlaysAugust'] } } : { $sum: monthField }
-                    },
+                        TotalPlays: month === '' ?  {$sum: { $add: ['$PlaysJune', '$PlaysJuly', '$PlaysAugust'] } } : { $sum: monthField }
+                    }
                 },
                 {
                     $project: {
                         _id: 0,
                         Album: 1,
                         Year: 1,
+                        Month: month === '' ? 'All months' : month,
                         TotalPlays: 1
                     }
                 },
@@ -141,4 +176,6 @@ export class AlbumService {
             throw err;  
         }  
     }
+
+    
 }

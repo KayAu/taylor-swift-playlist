@@ -31,6 +31,15 @@ let AlbumController = class AlbumController {
             return express_1.response.status(err.status).json(err.response);
         }
     }
+    async getYearlyProducedAlbums() {
+        try {
+            const albums = await this.albumService.getYearlyProducedAlbums();
+            return albums;
+        }
+        catch (err) {
+            return express_1.response.status(err.status).json(err.response);
+        }
+    }
     async getAlbumsByYear(year) {
         try {
             const albums = await this.albumService.getAlbumByYear(year);
@@ -51,8 +60,7 @@ let AlbumController = class AlbumController {
     }
     async getMostPopular(month = '', limit = 5) {
         try {
-            const validMonth = new month_validation_pipe_1.MonthValidationPipe().transform(month);
-            const albums = await this.albumService.getMostPopular(validMonth, limit);
+            const albums = await this.albumService.getMostPopular(month, limit);
             return albums;
         }
         catch (err) {
@@ -70,6 +78,15 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], AlbumController.prototype, "getAlbums", null);
+__decorate([
+    (0, common_1.Get)('getYearlyProducedAlbums'),
+    (0, swagger_1.ApiOperation)({ summary: 'Get total albums produced for each year' }),
+    (0, swagger_1.ApiResponse)({ status: 201, description: 'Return total albums produced in each year' }),
+    (0, swagger_1.ApiResponse)({ status: 400, description: 'Bad Request' }),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], AlbumController.prototype, "getYearlyProducedAlbums", null);
 __decorate([
     (0, common_1.Get)('getAlbumsByYear/:year'),
     (0, swagger_1.ApiOperation)({ summary: 'Get albums by year' }),
@@ -96,7 +113,7 @@ __decorate([
     (0, swagger_1.ApiQuery)({
         name: 'month',
         type: String,
-        description: 'Month for which to fetch the most popular albums',
+        description: 'Month for which to fetch the most popular albums. This field can be left empty to return most popular songs for all months.',
         required: false,
         example: 'June'
     }),
@@ -109,7 +126,7 @@ __decorate([
     }),
     (0, swagger_1.ApiResponse)({ status: 201, description: 'Return most popular items albums' }),
     (0, swagger_1.ApiResponse)({ status: 400, description: 'Bad Request' }),
-    __param(0, (0, common_1.Query)('month')),
+    __param(0, (0, common_1.Query)('month', month_validation_pipe_1.MonthValidationPipe)),
     __param(1, (0, common_1.Query)('limit', common_1.ParseIntPipe)),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, Object]),
