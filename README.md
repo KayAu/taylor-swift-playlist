@@ -5,10 +5,10 @@
 [circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
 [circleci-url]: https://circleci.com/gh/nestjs/nest
 
-## API HOSTED
+## SwiftCloud! Api
   <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
     <p align="center">
-    <a href="https://taylor-swift-playlist.onrender.com/api" target="_blank">Clic here</a> to test out the APIs created for SwiftCloud!
+    <a href="https://taylor-swift-playlist.onrender.com/api" target="_blank">Clic here</a> to view and try out the APIs created for SwiftCloud!
 
 </p>
 
