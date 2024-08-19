@@ -6,8 +6,8 @@
 [circleci-url]: https://circleci.com/gh/nestjs/nest
 
 ## SwiftCloud! Api
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
+  
+<p>
     <a href="https://taylor-swift-playlist.onrender.com/api" target="_blank">Clic here</a> to view and try out the APIs created for SwiftCloud!
 
 </p>
