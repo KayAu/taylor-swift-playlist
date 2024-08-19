@@ -27,7 +27,7 @@
       "config": { "distDir": "dist" }
     },
     {
-      "src": "_roxi/.roxi/*.js",
+      "src": "/(.*)",
       "use": "@vercel/node",
       "config": { "includeFiles": "dist/**" }
     }
