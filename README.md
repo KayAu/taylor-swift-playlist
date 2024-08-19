@@ -7,10 +7,15 @@
 
 ## SwiftCloud! Api
 <p>
-    <a href="https://taylor-swift-playlist.onrender.com/api" target="_blank" rel="noopener noreferrer">Click here</a>
-    to view and try out the APIs created for SwiftCloud!
+    <a href="https://taylor-swift-playlist.onrender.com/api" target="_blank" rel="noopener noreferrer">Explore the SwiftCloud APIs</a>.
+  Dive into the API documentation and discover all the features available.
+  <br>
+  Alternatively, you can <strong>copy and paste the link</strong> into your browser to start exploring right away:
+  <br>
+  <span style="color: #007bff; font-family: monospace;">
+    https://taylor-swift-playlist.onrender.com/api#/
+  </span>
 </p>
-
 
 ## Description
 
