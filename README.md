@@ -1,9 +1,3 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
-
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
 
 ## SwiftCloud! Api
 <p>
@@ -15,6 +9,20 @@
     https://taylor-swift-playlist.onrender.com/api#/
   </span>
 </p>
+
+## Testing Approach
+<p>
+  Once a NestJS service is completed, I'll create a unit test using Jest in the file `songs.service.spec.ts`. A sample unit test will be provided for the `getSongsByYear` method to verify that the service correctly returns the expected array of songs. Unit testing is executed by running `npm test` in the VSCode terminal.
+
+Following unit testing, functional testing will be conducted to test the API endpoints using Swagger. This will be followed by documentation testing to ensure that all endpoints, parameters, and responses documented accurately reflect the actual API behavior.
+</p>
+<p align="center">
+  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
+</p>
+
+[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
+[circleci-url]: https://circleci.com/gh/nestjs/nest
+
 
 ## Description
 
