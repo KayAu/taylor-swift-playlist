@@ -8,7 +8,7 @@
 ## SwiftCloud! Api
   
 <p>
-    <a href="https://taylor-swift-playlist.onrender.com/api" target="_blank">Clic here</a> to view and try out the APIs created for SwiftCloud!
+    <a href="https://taylor-swift-playlist.onrender.com/api" target="_blank" rel="noopener noreferrer">Click here</a> to view and try out the APIs created for SwiftCloud!
 
 </p>
 
