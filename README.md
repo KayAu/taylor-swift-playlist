@@ -1,16 +1,17 @@
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
 </p>
+
 ## SwiftCloud! Api
 <p>
   <a href="https://taylor-swift-playlist.onrender.com/api" target="_blank" rel="noopener noreferrer">Explore the SwiftCloud APIs</a>.
   Dive into the API documentation and discover all the features available.
-  <p><strong>*Note: </strong> The Api page will takes at least 5 seconds to load as the service is not frequently accessed, it might be going into a “cold start” state, which can cause delays when it needs to spin back up.</p>
   <br>
   Alternatively, you can <strong>copy and paste the link</strong> into your browser to start exploring right away: 
   <span style="color: #007bff; font-family: monospace;">
     https://taylor-swift-playlist.onrender.com/api#/
   </span>
+  <p><strong>*Note: </strong> The Api page will takes at least 5 seconds to load as the service is not frequently accessed, it might be going into a “cold start” state, which can cause delays when it needs to spin back up.</p>
 </p>
 
 ## Testing Approach
