@@ -132,8 +132,10 @@ let AlbumService = class AlbumService {
     }
     async getMostPopular(month, limit) {
         try {
-            if (!(0, schema_validator_1.checkFieldExists)(songs_schema_1.SongSchema, `Plays${month}`))
-                return [];
+            if (month) {
+                if (!(0, schema_validator_1.checkFieldExists)(songs_schema_1.SongSchema, `Plays${month}`))
+                    return [];
+            }
             const monthField = `$Plays${month}`;
             const albums = await this.songModel.aggregate([
                 {

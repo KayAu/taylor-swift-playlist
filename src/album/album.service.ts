@@ -141,8 +141,11 @@ async findAlbum(searchText: string): Promise<ISong[]>
     {
         try
         {
-            if (!checkFieldExists(SongSchema,`Plays${month}`)) return [];
-            
+            if(month)
+            {
+                if (!checkFieldExists(SongSchema,`Plays${month}`)) return [];
+            }
+        
            // create the dynamic field selector for the specified month
             const monthField = `$Plays${month}`;
        
