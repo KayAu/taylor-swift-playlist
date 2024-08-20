@@ -5,7 +5,7 @@
 <p>
   <a href="https://taylor-swift-playlist.onrender.com/api" target="_blank" rel="noopener noreferrer">Explore the SwiftCloud APIs</a>.
   Dive into the API documentation and discover all the features available.
-    <strong>* Note: </strong> The Api page will takes at least 5 seconds to load as the service is not frequently accessed, it might be going into a “cold start” state, which can cause delays when it needs to spin back up.
+  <p><strong>*Note: </strong> The Api page will takes at least 5 seconds to load as the service is not frequently accessed, it might be going into a “cold start” state, which can cause delays when it needs to spin back up.</p>
   <br>
   Alternatively, you can <strong>copy and paste the link</strong> into your browser to start exploring right away: 
   <span style="color: #007bff; font-family: monospace;">
