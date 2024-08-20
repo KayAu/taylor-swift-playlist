@@ -93,7 +93,7 @@ export class AlbumService {
         }    
     }
 
-    async findAlbum(searchText: string): Promise<ISong[]>
+async findAlbum(searchText: string): Promise<ISong[]>
     {
         try
         {
@@ -102,7 +102,7 @@ export class AlbumService {
             const albumns = await this.songModel.aggregate([
                 {
                     $match: {
-                        $or: [{ Album: regex },{ Song: regex }]
+                        Album: regex // 'i' for case-insensitive matching
                     }
                 },
                 {
