@@ -11,7 +11,7 @@
   <span style="color: #007bff; font-family: monospace;">
     https://taylor-swift-playlist.onrender.com/api#/
   </span>
-  <p><strong>*Note: </strong> The Api page will takes at least 5 seconds to load as the service is not frequently accessed, it might be going into a “cold start” state, which can cause delays when it needs to spin back up.</p>
+  <p><strong>*Note: </strong> The Api page will takes at least 50 seconds to load as the service is not frequently accessed, it might be going into a “cold start” state, which can cause delays when it needs to spin back up.</p>
 </p>
 
 ## Run the code locally
