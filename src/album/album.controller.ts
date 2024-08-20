@@ -59,7 +59,7 @@ export class AlbumController {
     }
 
     @Get('findAlbum/:searchText')
-    @ApiOperation({ summary: 'Find album by album or song name' })
+    @ApiOperation({ summary: 'Find album by name' })
     @ApiResponse({ status: 201, description: 'Return albums' })
     @ApiResponse({ status: 400, description: 'Bad Request' })
     async findAlbum(@Param('searchText') searchText: string) {
