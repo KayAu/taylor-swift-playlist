@@ -16,7 +16,7 @@
 
 ## Run the code locally
 To run the code locally, follow these steps:
-1. Click the link below to clone the project files.
+1. Click the link below to clone the project files.<br>
 [taylor-swift-playlist_git_clone.zip](https://github.com/user-attachments/files/16671922/taylor-swift-playlist_git_clone.zip)
 
 2. Open the cloned project in VSCode.
