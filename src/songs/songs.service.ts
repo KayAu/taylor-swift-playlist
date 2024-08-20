@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Song , SongModel, SongSchema } from '../schema/songs.schema';
-import { Schema } from 'mongoose';
+import { checkFieldExists } from '../utils/schema.validator';
 
 @Injectable()
 export class SongsService {
@@ -44,7 +44,10 @@ export class SongsService {
   {
     try
     {
-      if (!this.checkFieldExists(SongSchema,`Plays${month}`)) return [];
+      if(month)
+      {
+        if (!checkFieldExists(SongSchema,`Plays${month}`)) return [];
+      }
 
       const albums = await this.songModel.aggregate([
         {
@@ -97,62 +100,67 @@ export class SongsService {
 
   async getMonthlySummary(month: string) : Promise<any>
   {
-    const monthField = `Plays${month}`;
+    try
+    {
+      const monthField = `Plays${month}`;
 
-    if (!this.checkFieldExists(SongSchema,`Plays${month}`)) return [];
+      if (!checkFieldExists(SongSchema,`Plays${month}`)) return [];
 
-    // Create the aggregation pipeline
-    const pipeline = [
-      {
-        $project: {
-          Song: 1,
-          Artist: 1,
-          Album: 1,
-          Year: 1,
-          [monthField]: 1,
+      // Create the aggregation pipeline
+      const pipeline = [
+        {
+          $project: {
+            Song: 1,
+            Artist: 1,
+            Album: 1,
+            Year: 1,
+            [monthField]: 1,
+          },
         },
-      },
-      {
-        $group: {
-          _id: null,
-          totalPlays: { $sum: `$${monthField}` },
-          songs: {
-            $push: {
-              song: '$Song',
-              artist: '$Artist',
-              album: '$Album',
-              year: '$Year',
-              totalPlays: `$${monthField}`,
+        {
+          $group: {
+            _id: null,
+            totalPlays: { $sum: `$${monthField}` },
+            songs: {
+              $push: {
+                song: '$Song',
+                artist: '$Artist',
+                album: '$Album',
+                year: '$Year',
+                totalPlays: `$${monthField}`,
+              },
             },
           },
         },
-      },
-      {
-        $project: {
-          month: { $literal: month }, // Include the month name
-          totalPlays: 1,
-          songs: 1,
-          _id: 0,
+        {
+          $project: {
+            month: { $literal: month }, // Include the month name
+            totalPlays: 1,
+            songs: 1,
+            _id: 0,
+          },
         },
-      },
-    ];
+      ];
 
-    // Execute the aggregation pipeline
-    const [summary] = await this.songModel.aggregate(pipeline);
+      // Execute the aggregation pipeline
+      const [summary] = await this.songModel.aggregate(pipeline);
 
-    // Ensure the fields are in the desired order in the application logic
-    if (summary) {
-      // Reorder the fields as needed
-      const { month, totalPlays, songs } = summary;
-      return {
-        month,
-        totalPlays,
-        songs,
-      };
+      // Ensure the fields are in the desired order in the application logic
+      if (summary) {
+        // Reorder the fields as needed
+        const { month, totalPlays, songs } = summary;
+        return {
+          month,
+          totalPlays,
+          songs,
+        };
+      }
+
     }
+    catch (err) 
+    {
+        console.error(err);
+        throw err;  
+    } 
   };
-
-  private checkFieldExists(schema: Schema, fieldName: string): boolean {
-    return schema.paths[fieldName] !== undefined;
- }
 }

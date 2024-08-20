@@ -16,6 +16,8 @@ exports.AlbumService = void 0;
 const common_1 = require("@nestjs/common");
 const mongoose_1 = require("@nestjs/mongoose");
 const mongoose_2 = require("mongoose");
+const schema_validator_1 = require("../utils/schema.validator");
+const songs_schema_1 = require("../schema/songs.schema");
 let AlbumService = class AlbumService {
     constructor(songModel) {
         this.songModel = songModel;
@@ -98,7 +100,7 @@ let AlbumService = class AlbumService {
             const albumns = await this.songModel.aggregate([
                 {
                     $match: {
-                        $or: [{ Album: regex }, { Song: regex }]
+                        Album: regex
                     }
                 },
                 {
@@ -130,6 +132,8 @@ let AlbumService = class AlbumService {
     }
     async getMostPopular(month, limit) {
         try {
+            if (!(0, schema_validator_1.checkFieldExists)(songs_schema_1.SongSchema, `Plays${month}`))
+                return [];
             const monthField = `$Plays${month}`;
             const albums = await this.songModel.aggregate([
                 {

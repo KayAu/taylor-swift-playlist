@@ -73,7 +73,7 @@ __decorate([
     (0, common_1.Get)('getAlbums'),
     (0, swagger_1.ApiOperation)({ summary: 'Get all albums' }),
     (0, swagger_1.ApiResponse)({ status: 201, description: 'Return all albums sorted by year is DESC order' }),
-    (0, swagger_1.ApiResponse)({ status: 400, description: 'Bad Request' }),
+    (0, swagger_1.ApiResponse)({ status: 400, description: 'Bad Request which could due to invalid parameters' }),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
@@ -82,7 +82,7 @@ __decorate([
     (0, common_1.Get)('getYearlyProducedAlbums'),
     (0, swagger_1.ApiOperation)({ summary: 'Get total albums produced for each year' }),
     (0, swagger_1.ApiResponse)({ status: 201, description: 'Return total albums produced in each year' }),
-    (0, swagger_1.ApiResponse)({ status: 400, description: 'Bad Request' }),
+    (0, swagger_1.ApiResponse)({ status: 400, description: 'Bad Request which could due to invalid parameters' }),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
@@ -91,7 +91,7 @@ __decorate([
     (0, common_1.Get)('getAlbumsByYear/:year'),
     (0, swagger_1.ApiOperation)({ summary: 'Get albums by year' }),
     (0, swagger_1.ApiResponse)({ status: 201, description: 'Return albums produced in a given year' }),
-    (0, swagger_1.ApiResponse)({ status: 400, description: 'Bad Request' }),
+    (0, swagger_1.ApiResponse)({ status: 400, description: 'Bad Request which could due to invalid parameters' }),
     __param(0, (0, common_1.Param)('year', common_1.ParseIntPipe)),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number]),
@@ -99,9 +99,9 @@ __decorate([
 ], AlbumController.prototype, "getAlbumsByYear", null);
 __decorate([
     (0, common_1.Get)('findAlbum/:searchText'),
-    (0, swagger_1.ApiOperation)({ summary: 'Find album by album or song name' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Find album by name' }),
     (0, swagger_1.ApiResponse)({ status: 201, description: 'Return albums' }),
-    (0, swagger_1.ApiResponse)({ status: 400, description: 'Bad Request' }),
+    (0, swagger_1.ApiResponse)({ status: 400, description: 'Bad Request which could due to invalid parameters' }),
     __param(0, (0, common_1.Param)('searchText')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
@@ -125,7 +125,7 @@ __decorate([
         example: 5,
     }),
     (0, swagger_1.ApiResponse)({ status: 201, description: 'Return most popular items albums' }),
-    (0, swagger_1.ApiResponse)({ status: 400, description: 'Bad Request' }),
+    (0, swagger_1.ApiResponse)({ status: 400, description: 'Bad Request which could due to invalid parameters' }),
     __param(0, (0, common_1.Query)('month', month_validation_pipe_1.MonthValidationPipe)),
     __param(1, (0, common_1.Query)('limit', common_1.ParseIntPipe)),
     __metadata("design:type", Function),

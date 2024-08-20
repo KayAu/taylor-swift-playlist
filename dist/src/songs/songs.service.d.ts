@@ -8,5 +8,4 @@ export declare class SongsService {
     getMostPopular(month: string, limit: number): Promise<any[]>;
     getSongsByWriter(writer: string, sortField: string, ascOrder: boolean): Promise<any[]>;
     getMonthlySummary(month: string): Promise<any>;
-    private checkFieldExists;
 }

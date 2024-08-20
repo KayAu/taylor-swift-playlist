@@ -13,7 +13,7 @@ export class AlbumController {
     @Get('getAlbums')
     @ApiOperation({ summary: 'Get all albums' })
     @ApiResponse({ status: 201, description: 'Return all albums sorted by year is DESC order' })
-    @ApiResponse({ status: 400, description: 'Bad Request' })
+    @ApiResponse({ status: 400, description: 'Bad Request which could due to invalid parameters' })
     async getAlbums() {
         try
         {
@@ -29,7 +29,7 @@ export class AlbumController {
     @Get('getYearlyProducedAlbums')
     @ApiOperation({ summary: 'Get total albums produced for each year' })
     @ApiResponse({ status: 201, description: 'Return total albums produced in each year' })
-    @ApiResponse({ status: 400, description: 'Bad Request' })
+    @ApiResponse({ status: 400, description: 'Bad Request which could due to invalid parameters' })
     async getYearlyProducedAlbums() {
         try
         {
@@ -45,7 +45,7 @@ export class AlbumController {
     @Get('getAlbumsByYear/:year')
     @ApiOperation({ summary: 'Get albums by year' })
     @ApiResponse({ status: 201, description: 'Return albums produced in a given year' })
-    @ApiResponse({ status: 400, description: 'Bad Request' })
+    @ApiResponse({ status: 400, description: 'Bad Request which could due to invalid parameters' })
     async getAlbumsByYear(@Param('year', ParseIntPipe) year: number) {
         try
         {
@@ -61,7 +61,7 @@ export class AlbumController {
     @Get('findAlbum/:searchText')
     @ApiOperation({ summary: 'Find album by name' })
     @ApiResponse({ status: 201, description: 'Return albums' })
-    @ApiResponse({ status: 400, description: 'Bad Request' })
+    @ApiResponse({ status: 400, description: 'Bad Request which could due to invalid parameters' })
     async findAlbum(@Param('searchText') searchText: string) {
         try
         {
@@ -91,7 +91,7 @@ export class AlbumController {
         example: 5,
       })
     @ApiResponse({ status: 201, description: 'Return most popular items albums' })
-    @ApiResponse({ status: 400, description: 'Bad Request' })
+    @ApiResponse({ status: 400, description: 'Bad Request which could due to invalid parameters' })
     async getMostPopular(@Query('month', MonthValidationPipe) month = '', @Query('limit', ParseIntPipe) limit = 5) {
         try
         {

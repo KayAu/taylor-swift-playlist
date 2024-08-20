@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { ISong } from 'src/interface/song.interface';
 import { Model } from "mongoose";
+import { checkFieldExists } from '../utils/schema.validator';
+import { SongSchema } from 'src/schema/songs.schema';
 
 @Injectable()
 export class AlbumService {
@@ -102,7 +104,7 @@ async findAlbum(searchText: string): Promise<ISong[]>
             const albumns = await this.songModel.aggregate([
                 {
                     $match: {
-                        Album: regex // 'i' for case-insensitive matching
+                        Album: regex 
                     }
                 },
                 {
@@ -139,6 +141,8 @@ async findAlbum(searchText: string): Promise<ISong[]>
     {
         try
         {
+            if (!checkFieldExists(SongSchema,`Plays${month}`)) return [];
+            
            // create the dynamic field selector for the specified month
             const monthField = `$Plays${month}`;
        

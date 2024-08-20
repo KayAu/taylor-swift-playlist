@@ -16,6 +16,7 @@ exports.SongsService = void 0;
 const common_1 = require("@nestjs/common");
 const mongoose_1 = require("@nestjs/mongoose");
 const songs_schema_1 = require("../schema/songs.schema");
+const schema_validator_1 = require("../utils/schema.validator");
 let SongsService = class SongsService {
     constructor(songModel) {
         this.songModel = songModel;
@@ -47,8 +48,10 @@ let SongsService = class SongsService {
     }
     async getMostPopular(month, limit) {
         try {
-            if (!this.checkFieldExists(songs_schema_1.SongSchema, `Plays${month}`))
-                return [];
+            if (month) {
+                if (!(0, schema_validator_1.checkFieldExists)(songs_schema_1.SongSchema, `Plays${month}`))
+                    return [];
+            }
             const albums = await this.songModel.aggregate([
                 {
                     $addFields: {
@@ -92,57 +95,60 @@ let SongsService = class SongsService {
         }
     }
     async getMonthlySummary(month) {
-        const monthField = `Plays${month}`;
-        if (!this.checkFieldExists(songs_schema_1.SongSchema, `Plays${month}`))
-            return [];
-        const pipeline = [
-            {
-                $project: {
-                    Song: 1,
-                    Artist: 1,
-                    Album: 1,
-                    Year: 1,
-                    [monthField]: 1,
+        try {
+            const monthField = `Plays${month}`;
+            if (!(0, schema_validator_1.checkFieldExists)(songs_schema_1.SongSchema, `Plays${month}`))
+                return [];
+            const pipeline = [
+                {
+                    $project: {
+                        Song: 1,
+                        Artist: 1,
+                        Album: 1,
+                        Year: 1,
+                        [monthField]: 1,
+                    },
                 },
-            },
-            {
-                $group: {
-                    _id: null,
-                    totalPlays: { $sum: `$${monthField}` },
-                    songs: {
-                        $push: {
-                            song: '$Song',
-                            artist: '$Artist',
-                            album: '$Album',
-                            year: '$Year',
-                            totalPlays: `$${monthField}`,
+                {
+                    $group: {
+                        _id: null,
+                        totalPlays: { $sum: `$${monthField}` },
+                        songs: {
+                            $push: {
+                                song: '$Song',
+                                artist: '$Artist',
+                                album: '$Album',
+                                year: '$Year',
+                                totalPlays: `$${monthField}`,
+                            },
                         },
                     },
                 },
-            },
-            {
-                $project: {
-                    month: { $literal: month },
-                    totalPlays: 1,
-                    songs: 1,
-                    _id: 0,
+                {
+                    $project: {
+                        month: { $literal: month },
+                        totalPlays: 1,
+                        songs: 1,
+                        _id: 0,
+                    },
                 },
-            },
-        ];
-        const [summary] = await this.songModel.aggregate(pipeline);
-        if (summary) {
-            const { month, totalPlays, songs } = summary;
-            return {
-                month,
-                totalPlays,
-                songs,
-            };
+            ];
+            const [summary] = await this.songModel.aggregate(pipeline);
+            if (summary) {
+                const { month, totalPlays, songs } = summary;
+                return {
+                    month,
+                    totalPlays,
+                    songs,
+                };
+            }
+        }
+        catch (err) {
+            console.error(err);
+            throw err;
         }
     }
     ;
-    checkFieldExists(schema, fieldName) {
-        return schema.paths[fieldName] !== undefined;
-    }
 };
 exports.SongsService = SongsService;
 exports.SongsService = SongsService = __decorate([

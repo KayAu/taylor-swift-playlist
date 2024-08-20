@@ -34,7 +34,7 @@ export class SongsController {
     example: false,
   })
   @ApiResponse({ status: 201, description: 'Return all songs sorted by year is DESC order' })
-  @ApiResponse({ status: 400, description: 'Bad Request' })
+  @ApiResponse({ status: 400, description: 'Bad Request which could due to invalid parameters' })
   async getSongs(@Query('searchText') searchText: string, @Query('sortBy', SortByValidationPipe) sortBy: string, @Query('ascOrder', ParseBoolPipe) ascOrder: boolean) {
     try
     {
@@ -71,7 +71,7 @@ export class SongsController {
     example: false,
   })
   @ApiResponse({ status: 201, description: 'Return songs writen in a given year' })
-  @ApiResponse({ status: 400, description: 'Bad Request' })
+  @ApiResponse({ status: 400, description: 'Bad Request which could due to invalid parameters' })
   async getSongsByYear(@Query('year', ParseIntPipe) year: number, @Query('sortBy', SortByValidationPipe) sortBy: string, @Query('ascOrder', ParseBoolPipe) ascOrder: boolean) {
     try
     {
@@ -108,7 +108,7 @@ export class SongsController {
     example: false,
   })
   @ApiResponse({ status: 201, description: 'Return songs for an album' })
-  @ApiResponse({ status: 400, description: 'Bad Request' })
+  @ApiResponse({ status: 400, description: 'Bad Request which could due to invalid parameters' })
   async getSongsByAlbum(@Query('album') album: string, @Query('sortBy', SortByValidationPipe) sortBy: string, @Query('ascOrder', ParseBoolPipe) ascOrder: boolean) {
       try
       {
@@ -126,7 +126,7 @@ export class SongsController {
   @ApiQuery({
       name: 'month',
       type: String,
-      description: 'Month for which to fetch the most popular songs. This field can be left empty to return most popular songs for all months',
+      description: 'Month for which to fetch the most popular songs. The month name, for instance which can be either "Jun" or "June". This field can be left empty to return most popular songs for all months',
       required: false,
       example: 'June'
     })
@@ -138,7 +138,7 @@ export class SongsController {
       example: 5,
     })
   @ApiResponse({ status: 201, description: 'Return most popular items albums' })
-  @ApiResponse({ status: 400, description: 'Bad Request' })
+  @ApiResponse({ status: 400, description: 'Bad Request which could due to invalid parameters' })
   async getMostPopular(@Query('month', MonthValidationPipe) month = '', @Query('limit', ParseIntPipe) limit = 5) {
       try
       {
@@ -175,7 +175,7 @@ export class SongsController {
     example: true,
   })
   @ApiResponse({ status: 201, description: 'Return songs' })
-  @ApiResponse({ status: 400, description: 'Bad Request' })
+  @ApiResponse({ status: 400, description: 'Bad Request which could due to invalid parameters' })
   async getSongsByWriter(@Query('writer') writer: string, @Query('sortBy', SortByValidationPipe) sortBy: string, @Query('ascOrder', ParseBoolPipe) ascOrder: boolean) {
       try
       {
@@ -189,7 +189,7 @@ export class SongsController {
   }
 
   @Get('getMonthlySummary')
-  @ApiOperation({ summary: 'Get the total plays summary for a given month' })
+  @ApiOperation({ summary: 'Get the total plays summary for a given month. The month name, for instance which can be either "Jun" or "June"' })
   @ApiQuery({
       name: 'month',
       type: String,
@@ -198,7 +198,7 @@ export class SongsController {
       example: 'June'
     })
   @ApiResponse({ status: 201, description: 'Return most popular items albums' })
-  @ApiResponse({ status: 400, description: 'Bad Request' })
+  @ApiResponse({ status: 400, description: 'Bad Request which could due to invalid parameters' })
   async getMonthlySummary(@Query('month', MonthValidationPipe) month) {
       try
       {      

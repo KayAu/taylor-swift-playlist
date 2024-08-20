@@ -103,7 +103,7 @@ __decorate([
         example: false,
     }),
     (0, swagger_1.ApiResponse)({ status: 201, description: 'Return all songs sorted by year is DESC order' }),
-    (0, swagger_1.ApiResponse)({ status: 400, description: 'Bad Request' }),
+    (0, swagger_1.ApiResponse)({ status: 400, description: 'Bad Request which could due to invalid parameters' }),
     __param(0, (0, common_1.Query)('searchText')),
     __param(1, (0, common_1.Query)('sortBy', sortBy_validation_pipe_1.SortByValidationPipe)),
     __param(2, (0, common_1.Query)('ascOrder', common_1.ParseBoolPipe)),
@@ -136,7 +136,7 @@ __decorate([
         example: false,
     }),
     (0, swagger_1.ApiResponse)({ status: 201, description: 'Return songs writen in a given year' }),
-    (0, swagger_1.ApiResponse)({ status: 400, description: 'Bad Request' }),
+    (0, swagger_1.ApiResponse)({ status: 400, description: 'Bad Request which could due to invalid parameters' }),
     __param(0, (0, common_1.Query)('year', common_1.ParseIntPipe)),
     __param(1, (0, common_1.Query)('sortBy', sortBy_validation_pipe_1.SortByValidationPipe)),
     __param(2, (0, common_1.Query)('ascOrder', common_1.ParseBoolPipe)),
@@ -169,7 +169,7 @@ __decorate([
         example: false,
     }),
     (0, swagger_1.ApiResponse)({ status: 201, description: 'Return songs for an album' }),
-    (0, swagger_1.ApiResponse)({ status: 400, description: 'Bad Request' }),
+    (0, swagger_1.ApiResponse)({ status: 400, description: 'Bad Request which could due to invalid parameters' }),
     __param(0, (0, common_1.Query)('album')),
     __param(1, (0, common_1.Query)('sortBy', sortBy_validation_pipe_1.SortByValidationPipe)),
     __param(2, (0, common_1.Query)('ascOrder', common_1.ParseBoolPipe)),
@@ -183,7 +183,7 @@ __decorate([
     (0, swagger_1.ApiQuery)({
         name: 'month',
         type: String,
-        description: 'Month for which to fetch the most popular songs. This field can be left empty to return most popular songs for all months',
+        description: 'Month for which to fetch the most popular songs. The month name, for instance which can be either "Jun" or "June". This field can be left empty to return most popular songs for all months',
         required: false,
         example: 'June'
     }),
@@ -195,7 +195,7 @@ __decorate([
         example: 5,
     }),
     (0, swagger_1.ApiResponse)({ status: 201, description: 'Return most popular items albums' }),
-    (0, swagger_1.ApiResponse)({ status: 400, description: 'Bad Request' }),
+    (0, swagger_1.ApiResponse)({ status: 400, description: 'Bad Request which could due to invalid parameters' }),
     __param(0, (0, common_1.Query)('month', month_validation_pipe_1.MonthValidationPipe)),
     __param(1, (0, common_1.Query)('limit', common_1.ParseIntPipe)),
     __metadata("design:type", Function),
@@ -227,7 +227,7 @@ __decorate([
         example: true,
     }),
     (0, swagger_1.ApiResponse)({ status: 201, description: 'Return songs' }),
-    (0, swagger_1.ApiResponse)({ status: 400, description: 'Bad Request' }),
+    (0, swagger_1.ApiResponse)({ status: 400, description: 'Bad Request which could due to invalid parameters' }),
     __param(0, (0, common_1.Query)('writer')),
     __param(1, (0, common_1.Query)('sortBy', sortBy_validation_pipe_1.SortByValidationPipe)),
     __param(2, (0, common_1.Query)('ascOrder', common_1.ParseBoolPipe)),
@@ -237,7 +237,7 @@ __decorate([
 ], SongsController.prototype, "getSongsByWriter", null);
 __decorate([
     (0, common_1.Get)('getMonthlySummary'),
-    (0, swagger_1.ApiOperation)({ summary: 'Get the total plays summary for a given month' }),
+    (0, swagger_1.ApiOperation)({ summary: 'Get the total plays summary for a given month. The month name, for instance which can be either "Jun" or "June"' }),
     (0, swagger_1.ApiQuery)({
         name: 'month',
         type: String,
@@ -246,7 +246,7 @@ __decorate([
         example: 'June'
     }),
     (0, swagger_1.ApiResponse)({ status: 201, description: 'Return most popular items albums' }),
-    (0, swagger_1.ApiResponse)({ status: 400, description: 'Bad Request' }),
+    (0, swagger_1.ApiResponse)({ status: 400, description: 'Bad Request which could due to invalid parameters' }),
     __param(0, (0, common_1.Query)('month', month_validation_pipe_1.MonthValidationPipe)),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
